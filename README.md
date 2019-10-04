@@ -1,3 +1,7 @@
+# Forked project to also support Internet Explorer 11.
+
+
+
 <p style="text-align: center;" align="center">
     <h1 align="center">usePortal</h1>
 </p>
