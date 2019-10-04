@@ -1,6 +1,6 @@
 {
   "name": "@kunukn/react-useportal",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "homepage": "https://codesandbox.io/s/w6jp7z4pkk",
   "main": "dist/usePortal.js",
   "repository": {
@@ -13,8 +13,8 @@
   "private": false,
   "scripts": {
     "dev": "rm -rf dist && parcel examples/index.html --open",
-    "_prepublishOnly": "yarn build # runs before publish",
-    "build": "rm -rf dist && ./node_modules/.bin/tsc --module CommonJS && yarn minify && yarn copy-d-ts",
+    "prepublishOnly": "yarn build # runs before publish",
+    "build": "rm -rf dist && ./node_modules/.bin/tsc --module CommonJS && yarn minify",
     "build:watch": "rm -rf dist && ./node_modules/.bin/tsc -w --module CommonJS",
     "test:browser": "yarn tsc && jest --env=jsdom",
     "test:browser:watch": "yarn tsc && jest --watch --env=jsdom",
@@ -26,7 +26,7 @@
     "lint": "eslint ./**/*.{ts,tsx}",
     "lint:fix": "npm run lint -- --fix",
     "lint:watch": "watch 'yarn lint'",
-    "minify": "uglifyjs dist/usePortal.js --config-file uglify.config.json --output dist/usePortal.min.js",
+    "minify": "uglifyjs dist/usePortal.js --config-file uglify.config.json --output dist/usePortal.js",
     "copy-d-ts": "node copy-d.ts-file.js"
   },
   "peerDependencies": {
