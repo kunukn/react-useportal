@@ -1,6 +1,6 @@
 {
-  "name": "react-useportal",
-  "version": "1.0.3",
+  "name": "@kunukn/react-useportal",
+  "version": "0.0.1",
   "homepage": "https://codesandbox.io/s/w6jp7z4pkk",
   "main": "dist/usePortal.js",
   "repository": {
@@ -31,9 +31,7 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
   },
-  "dependencies": {
-    "use-ssr": "^1.0.13"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@testing-library/react-hooks": "^2.0.1",
     "@types/jest": "^24.0.18",
