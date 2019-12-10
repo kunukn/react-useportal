@@ -160,10 +160,11 @@ const useModal = () => {
     onOpen({ portal }) {
       portal.current.style.cssText = `
         /* add your css here for the Portal */
-        position: absolute;
+        position: fixed;
         left: 50%;
         top: 50%;
         transform: translate(-50%,-50%);
+        z-index: 1000;
       `
     }
   })
@@ -230,9 +231,11 @@ Options
 | `isOpen` | This will be the default for the portal. Default is `false` |
 | `onOpen` | This is used to call something when the portal is opened and to modify the css of the portal directly |
 | `onClose` | This is used to call something when the portal is closed and to modify the css of the portal directly |
+| `onPortalClick` | This is fired whenever clicking on the `Portal` |
 | html event handlers (i.e. `onClick`) | These can be used instead of `onOpen` to modify the css of the portal directly. [`onMouseEnter` and `onMouseLeave` example](https://codesandbox.io/s/useportal-usedropdown-dgesf) |
 
 ### Option Usage
+
 ```js
 const {
   openPortal,
@@ -240,21 +243,34 @@ const {
   togglePortal,
   isOpen,
   Portal,
-  ref, // if you don't pass an event to openPortal, closePortal, or togglePortal, you will need to put this on the element you want to interact with/click
+  // if you don't pass an event to openPortal, closePortal, or togglePortal, you will need
+  // to put this on the element you want to interact with/click
+  ref,
+  // if for some reason you want to interact directly with the portal, you can with this ref
+  portalRef,
 } = usePortal({
   closeOnOutsideClick: true,
   closeOnEsc: true,
   bindTo, // attach the portal to this node in the DOM
   isOpen: false,
-  onOpen: ({ event, portal, targetEl }) => {},
-  onClose({ event, portal, targetEl }) {},
-  // in addition, any event handler such as onClick, onMouseOver, etc will be handled like
-  onClick({ event, portal, targetEl }) {}
+  // `event` has all the fields that a normal `event` would have such as `event.target.value`, etc.
+  // with the additional `portal` and `targetEl` added to it as seen in the examples below
+  onOpen: (event) => {
+    // can access: event.portal, event.targetEl, event.event, event.target, etc.
+  },
+  // `onClose` will not have an `event` unless you pass an `event` to `closePortal`
+  onClose({ portal, targetEl, event }) {},
+  // `targetEl` is the element that you either are attaching a `ref` to
+  // or that you are putting `openPortal` or `togglePortal` or `closePortal` on
+  onPortalClick({ portal, targetEl, event }) {},
+  // in addition, any event handler such as onClick, onMouseOver, etc will be handled the same
+  onClick({ portal, targetEl, event }) {}
 })
 ```
 Todos
 ------
-- [ ] add correct return types
+- [ ] React Native support. [1](https://github.com/zenyr/react-native-portal) [2](https://github.com/cloudflare/react-gateway) [3](https://medium.com/@naorzruk/portals-in-react-native-22797ba8aa1b) [4](https://stackoverflow.com/questions/46505378/can-we-have-react-16-portal-functionality-react-native) [5](https://github.com/callstack/react-native-paper/blob/master/src/components/Portal/PortalManager.tsx) Probably going to have to add a `Provider`...
+- [ ] add correct typescript return types
 - [ ] add support for popup windows [resource 1](https://javascript.info/popup-windows) [resource 2](https://hackernoon.com/using-a-react-16-portal-to-do-something-cool-2a2d627b0202). Maybe something like
 ```jsx
   const { openPortal, closePortal, isOpen, Portal } = usePortal({
@@ -268,4 +284,3 @@ Todos
 - [ ] set up code climate test coverage
 - [ ] optimize badges [see awesome badge list](https://github.com/boennemann/badges)
   - [ ] add code climate test coverage badge
-- [ ] add example to docs with using a `ref` instead of the `event` in `openPortal`, etc.

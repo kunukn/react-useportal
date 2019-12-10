@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "lib": ["es2017", "dom"],
-    "module": "es2015",
+    "lib": [ "es2017", "dom" ],
+    "module": "commonjs",
     "moduleResolution": "node",
     "target": "es5",
     "strict": true,
@@ -10,8 +10,12 @@
     "sourceMap": true,
     "jsx": "react",
     "esModuleInterop": true,
-    "types": ["jest"]
+    "types": [
+      "jest"
+    ]
   },
-  "include": ["usePortal.ts"],
+  "include": [
+    "usePortal.ts",
+  ],
   "exclude": ["node_modules"]
 }

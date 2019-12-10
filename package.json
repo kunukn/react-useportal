@@ -1,6 +1,6 @@
 {
-  "name": "@kunukn/react-useportal",
-  "version": "0.0.3",
+  "name": "react-useportal",
+  "version": "1.0.12",
   "homepage": "https://codesandbox.io/s/w6jp7z4pkk",
   "main": "dist/usePortal.js",
   "repository": {
@@ -14,7 +14,7 @@
   "scripts": {
     "dev": "rm -rf dist && parcel examples/index.html --open",
     "prepublishOnly": "yarn build # runs before publish",
-    "build": "rm -rf dist && ./node_modules/.bin/tsc --module CommonJS && yarn minify",
+    "build": "rm -rf dist && ./node_modules/.bin/tsc --module CommonJS",
     "build:watch": "rm -rf dist && ./node_modules/.bin/tsc -w --module CommonJS",
     "test:browser": "yarn tsc && jest --env=jsdom",
     "test:browser:watch": "yarn tsc && jest --watch --env=jsdom",
@@ -25,24 +25,24 @@
     "clean": "npm prune; yarn cache clean; rm -rf ./node_modules package-lock.json yarn.lock; yarn",
     "lint": "eslint ./**/*.{ts,tsx}",
     "lint:fix": "npm run lint -- --fix",
-    "lint:watch": "watch 'yarn lint'",
-    "minify": "uglifyjs dist/usePortal.js --config-file uglify.config.json --output dist/usePortal.js",
-    "copy-d-ts": "node copy-d.ts-file.js"
+    "lint:watch": "watch 'yarn lint'"
   },
   "peerDependencies": {
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
   },
-  "dependencies": {},
+  "dependencies": {
+    "use-ssr": "^1.0.19"
+  },
   "devDependencies": {
-    "@testing-library/react-hooks": "^2.0.1",
+    "@testing-library/react-hooks": "^3.0.0",
     "@types/jest": "^24.0.18",
     "@types/react": "^16.9.2",
     "@types/react-dom": "^16.8.4",
     "@typescript-eslint/eslint-plugin": "^2.2.0",
     "@typescript-eslint/parser": "^2.2.0",
     "eslint": "^6.3.0",
-    "eslint-plugin-jest": "^22.17.0",
+    "eslint-plugin-jest": "^23.0.0",
     "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-react": "^7.14.3",
     "jest": "^24.7.1",
@@ -53,8 +53,7 @@
     "react-test-renderer": "^16.8.6",
     "react-testing-library": "^8.0.0",
     "ts-jest": "^24.0.0",
-    "typescript": "^3.4.5",
-    "uglify-js": "^3.6.0"
+    "typescript": "^3.4.5"
   },
   "files": [
     "dist"
