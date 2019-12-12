@@ -2,15 +2,15 @@ import React from 'react'
 import { render } from 'react-dom'
 import usePortal from '../usePortal'
 
-const Exmaple1 = () => {
-  const { openPortal, closePortal, isOpen, Portal } = usePortal()
+const Example1 = () => {
+  const { openPortal, closePortal, isOpen, Portal } = usePortal({portalProps: {className: 'my-portal'}})
 
   return (
     <>
       <h3>Example 1</h3>
       <button onClick={openPortal}>Open Portal</button>
       {isOpen && (
-        <Portal className="my-portal">
+        <Portal>
           <div>
             Cool
             <button onClick={closePortal}>Close Portal</button>
@@ -85,7 +85,7 @@ const Example2 = () => {
 function App() {
   return (
     <>
-      <Exmaple1 />
+      <Example1 />
       <Example2 />
     </>
   )

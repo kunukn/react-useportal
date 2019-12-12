@@ -19,8 +19,8 @@ type EventListenersRef = MutableRefObject<{
   [K in keyof DOMAttributes<K>]?: (event: SyntheticEvent<any, Event>) => void
 }>
 
-interface IProps {
-  [key: string]: string|any;
+type PortalProps = {
+  [key: string]: string;
 }
 
 type UsePortalOptions = {
@@ -31,7 +31,7 @@ type UsePortalOptions = {
   onOpen?: CustomEventHandler
   onClose?: CustomEventHandler
   onPortalClick?: CustomEventHandler
-  props?: IProps
+  portalProps?: PortalProps
 } & CustomEventHandlers
 
 type UsePortalObjectReturn = {} // TODO
@@ -47,7 +47,7 @@ export default function usePortal({
   onOpen,
   onClose,
   onPortalClick,
-  props,
+  portalProps,
   ...eventHandlers
 }: UsePortalOptions = {}): any {
   const { isServer, isBrowser } = useSSR()
@@ -62,17 +62,17 @@ export default function usePortal({
   }, [])
 
   const targetEl = useRef() as HTMLElRef // this is the element you are clicking/hovering/whatever, to trigger opening the portal
-  const portal = useRef(isBrowser ? document.createElement('div') : null) as HTMLElRef
+  const portal = useRef() as HTMLElRef
 
   useEffect(() => {
     if (isBrowser && !portal.current) {
       let div:HTMLElement = document.createElement('div')
-      if(props) {
-        Object.keys(props).forEach(p => div.setAttribute(p, props[p]))
+      if(portalProps) {
+        Object.keys(portalProps).forEach(p => div.setAttribute(p, portalProps[p]))
       }
       portal.current = div
     }
-  }, [isBrowser, portal, props])
+  }, [isBrowser, portal, portalProps])
 
   const elToMountTo = useMemo(() => {
     if (isServer) return
