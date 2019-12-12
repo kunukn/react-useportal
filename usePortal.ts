@@ -19,6 +19,10 @@ type EventListenersRef = MutableRefObject<{
   [K in keyof DOMAttributes<K>]?: (event: SyntheticEvent<any, Event>) => void
 }>
 
+interface IProps {
+  [key: string]: string|any;
+}
+
 type UsePortalOptions = {
   closeOnOutsideClick?: boolean
   closeOnEsc?: boolean
@@ -27,6 +31,7 @@ type UsePortalOptions = {
   onOpen?: CustomEventHandler
   onClose?: CustomEventHandler
   onPortalClick?: CustomEventHandler
+  props?: IProps
 } & CustomEventHandlers
 
 type UsePortalObjectReturn = {} // TODO
@@ -42,6 +47,7 @@ export default function usePortal({
   onOpen,
   onClose,
   onPortalClick,
+  props,
   ...eventHandlers
 }: UsePortalOptions = {}): any {
   const { isServer, isBrowser } = useSSR()
@@ -59,8 +65,14 @@ export default function usePortal({
   const portal = useRef(isBrowser ? document.createElement('div') : null) as HTMLElRef
 
   useEffect(() => {
-    if (isBrowser && !portal.current) portal.current = document.createElement('div')
-  }, [isBrowser, portal])
+    if (isBrowser && !portal.current) {
+      let div:HTMLElement = document.createElement('div')
+      if(props) {
+        Object.keys(props).forEach(p => div.setAttribute(p, props[p]))
+      }
+      portal.current = div
+    }
+  }, [isBrowser, portal, props])
 
   const elToMountTo = useMemo(() => {
     if (isServer) return
@@ -172,14 +184,10 @@ export default function usePortal({
     }
   }, [isServer, handleOutsideMouseClick, handleKeydown, elToMountTo, portal])
 
-  const Portal = useCallback(({ children, className }: { children: ReactNode, className: string }) => {
-    if (portal.current != null) {
-      if(className && portal.current){
-        portal.current.className = className
-      }
-      return createPortal(children, portal.current)
-    }
-    return null
+  const Portal = useCallback(({ children }: { children: ReactNode }) => {
+      return portal.current
+        ? createPortal(children, portal.current)
+        : null
   }, [portal])
 
   return Object.assign(
